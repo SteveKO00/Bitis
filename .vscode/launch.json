@@ -5,11 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "name": "Launch Chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
+            "type": "chrome",
             "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
-        }
+            "webRoot": "${workspaceFolder}/index.html"
+        },
+        
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Launch index.html",
+            "file": "${workspaceFolder}/index.html"
+          }
     ]
 }
