@@ -42,6 +42,7 @@ list-style-type: none;
   margin: 2px;
   font-size: 14px;
   font-family: 'Noto Sans';
+  z-index: 20;
  
  
 }
@@ -58,15 +59,35 @@ list-style-type: none;
   position: absolute;
   top: 8px;
   right: 8px;
+  z-index: 1001;
 
 }
 .new-item{
   position:absolute ;
   top: 8px;
   left: 8px;
+  z-index: 1001;
 }
 .thumnail{
-  width: 100%
+  width: 100%;
+  position: relative;
+  z-index: 44;
+}
+.thumnailHover{
+  width: 100%;
+  position:absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 55;
+  
+  opacity: 0;
+  transition: all 0.5s ;
+}
+.item:hover .thumnailHover{
+ 
+  opacity: 1;
+  
+  
 }
 
 .buy{
@@ -89,6 +110,7 @@ z-index: 1000;
 .name{
   font-weight: bold;
   margin: 5px 5px;
+  height: 42px;
 }
 
 .buy{
@@ -110,12 +132,14 @@ z-index: 1000;
 }
 .style-and-buy{
   transition: all 0.3s ;
-  display: none ;
-
+  opacity: 0;
+  z-index: 1;
 
 }
 .item:hover .style-and-buy{
-  display: block ;
-  
+  opacity: 1;
+  z-index: 1000;
 }
+.pointer {cursor: pointer;}
+
 
