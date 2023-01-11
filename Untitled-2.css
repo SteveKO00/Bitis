@@ -132,6 +132,8 @@ z-index: 1000;
 }
 .style-and-buy{
   transition: all 0.3s ;
+  box-shadow: 0px 12px 12px rgb(0 0 0 / 10%);
+  box-shadow-top: none;
   opacity: 0;
   z-index: 1;
 

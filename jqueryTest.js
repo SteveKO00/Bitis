@@ -1,6 +1,6 @@
   let api = [], apiCategory = [];
 
-
+  let categoryIdSelect = null;
 
   $(document).ready(function () {
 
@@ -27,7 +27,7 @@
 
   callItem(api);
 
-  let category = '<li class="nav-item"><a class="nav-link active text-black" aria-current="page" href="#">NAM</a></li>';
+  let category = '<li class="nav-item pointer Nam"><a class="nav-link active text-black" aria-current="page" >NAM</a></li>';
   for (const type of apiCategory) {
     category += `
     <li class="nav-item pointer" id="${'navId'+ type.id}">
@@ -135,24 +135,52 @@ function formatPrice(inputPrice){
 }
 
   // thay đổi category theo ID
-  let filteredApi;
   function filterCategory(categoryId){
-    console.log(categoryId);
+  
     filteredApi = api.filter(function(api){        
           return api.categoryId == categoryId;
         });
           console.log(filteredApi);
           callItem(filteredApi);
+          categoryIdSelect = filteredApi;       
   };
 
 //sắp xếp gia tăng dần
 $('select').on('change', function() {
-  if (value=1){
-    data = filteredApi.sort(function(api1,api2){
+  //TH sắp xếp khi ko có lọc category
+  let value = $(this).val();
+  if(categoryIdSelect===null){
 
+  if (value==="ascending"){
+    data = api.sort(function(api1,api2){
+      console.log(333)
       return api1.price-api2.price;
     })
+  }else if (value==="decrease"){
+    data = api.sort(function(api1,api2){
+      console.log(444)
+      return api2.price-api1.price;
+    })
   }
-  console.log(data);
+   callItem(data);
+   //TH còn lại
+  }else{
+    if (value==="ascending"){
+      data = categoryIdSelect.sort(function(api1,api2){
+        console.log(55)
+        return api1.price-api2.price;
+      })
+    }else if (value==="decrease"){
+      data = categoryIdSelect.sort(function(api1,api2){
+        console.log(66)
+        return api2.price-api1.price;
+      })
+  }
+  callItem(data);
+}
 });
+$(".Nam").click(function () {
+  callItem(api);
+});
+
   
