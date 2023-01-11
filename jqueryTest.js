@@ -1,7 +1,9 @@
-$(document).ready(function () {
-
-
   let api = [], apiCategory = [];
+
+
+
+  $(document).ready(function () {
+
 
   $.ajax({
     async: false,
@@ -13,15 +15,6 @@ $(document).ready(function () {
     });
 
 
-    $(".nav-item").click(function (id) {
-      console.log(1111);
-      // id = apiCategory.id;
-      // api.filter(function(api.id){
-      //   return api.id = apiCategory.id;
-      // });
-    })
-
-  
     
   $.ajax({
     async: false,
@@ -32,11 +25,13 @@ $(document).ready(function () {
       apiCategory = data;
     });
 
+  callItem(api);
+
   let category = '<li class="nav-item"><a class="nav-link active text-black" aria-current="page" href="#">NAM</a></li>';
   for (const type of apiCategory) {
     category += `
-    <li class="nav-item" id="${'navId'+ type.id}">
-      <a class="nav-link text-black" >${type.name}</a>
+    <li class="nav-item pointer" id="${'navId'+ type.id}">
+      <a class="nav-link text-black" onclick="filterCategory(${type.id})">${type.name}</a>
       <div class="d-none" >${type.id}</div>
     </li>
     `
@@ -44,30 +39,27 @@ $(document).ready(function () {
   $(".category").html(category);
   
 
-  
+
+
+// thay đổi màu khi kích vào trái tim 
+  let changeColor = false;
+  $(".icon-heart").click(function () {
+    if (!changeColor) {
+      $(this).css("color", "red");
+      changeColor = true;
+    } else {
+      $(this).css("color", "black");
+      changeColor = false;
+    };
+
+  });
+
+});
+
+//gọi item từ api
+function callItem(data){
   let iteam = '';
-  for (const productIteam of api) {
-    let t = productIteam.price;
-    let priceString = [];
-    let i = 0;
-    let price = '';
-    while (t > 999) {
-      let phanDu = t % 1000;
-      t = (t - t % 1000) / 1000;
-      priceString[i] = phanDu;
-      if (t < 1000) {
-         price = t;
-         };
-      i++;
-    };
-    
-    for (let j = i - 1; j >= 0; j--) {
-      if (priceString[j] != 0) {
-        price = price + ',' + priceString[j];
-      } else {
-        price = price + ',' + '000';
-      }
-    };
+  for (const productIteam of data) {
     iteam += `
     <div class="item ${productIteam.id}">
      <div class="product-box-img">
@@ -88,10 +80,10 @@ $(document).ready(function () {
                 <p class="type">+3 màu sắc</p>
               </div>
               <p class="name ">${productIteam.name}</p>
-              <p class="price">${price}</p>
+              <p class="price">${formatPrice(productIteam.price)}</p>
               <div class="bot w-100 bg-white position-absolute">
                 <div class="style-and-buy ">
-                  <div class="img-small">
+                  <div class="img-small pointer">
                     <img
                       src="${productIteam.images[0]}"
                       width="50" height="50">
@@ -110,26 +102,57 @@ $(document).ready(function () {
             </div>
       </div>
     `
+  };
+  $(".product-list").html(iteam);
+}
 
+
+//thêm dấu phẩy cho giá giày
+function formatPrice(inputPrice){
+  let t = inputPrice;//chia t den khi t<1000 thi dung
+  let priceString = [];
+  let i = 0; // i la bien dem cua mang priceString
+  let priceOutput = '';
+  while (t > 999) {
+    let mod = t % 1000;
+    t = (t - t % 1000) / 1000;
+    priceString[i] = mod;
+    if (t < 1000) {
+      priceOutput = t;
+       };
+    i++;
+  };
+  //Ghép từng phần tử để được chuỗi số có dấu phẩy
+  for (let j = i - 1; j >= 0; j--) {//đảo ngược vị trí mảng nên ghép từ cuối lên
+    if (priceString[j] != 0) {
+      priceOutput = priceOutput + ',' + priceString[j];
+    } else {
+      priceOutput = priceOutput + ',' + '000';
+    }
+  };
+  priceOutput = priceOutput + '₫';
+  return priceOutput; 
+}
+
+  // thay đổi category theo ID
+  let filteredApi;
+  function filterCategory(categoryId){
+    console.log(categoryId);
+    filteredApi = api.filter(function(api){        
+          return api.categoryId == categoryId;
+        });
+          console.log(filteredApi);
+          callItem(filteredApi);
   };
 
+//sắp xếp gia tăng dần
+$('select').on('change', function() {
+  if (value=1){
+    data = filteredApi.sort(function(api1,api2){
 
-
-  $(".product-list").html(iteam);
-
-
-  let changeColor = false;
-  $(".icon-heart").click(function () {
-    if (!changeColor) {
-      $(this).css("color", "red");
-      changeColor = true;
-    } else {
-      $(this).css("color", "black");
-      changeColor = false;
-    };
-
-  });
-
-
-
+      return api1.price-api2.price;
+    })
+  }
+  console.log(data);
 });
+  
